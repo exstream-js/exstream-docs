@@ -16,7 +16,7 @@ npm install exstream.js
 
 First of all, we have to import the library
 ```js
-const _ = require('exstram.js')
+const _ = require('exstream.js')
 ```
 
 An exstream flow is very similar to a `lodash` chain. We also use the `_` symbol for convenience, but feel free to name it as you prefer!
