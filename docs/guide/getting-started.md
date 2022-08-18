@@ -225,6 +225,11 @@ const resPromise = _(fs.createReadStream('input.txt.gz')) // the source can be a
   })
 ```
 
+## Next steps
+
+We've only scraped the surface of what exstream is able to do. The guide covers in details how exstream works and how can be used to solve complex, real world use cases.
+
+If you skipped the [Introduction](what-is-exstream), we strongly recommend reading it before moving on to the rest of the documentation.
 
 
 

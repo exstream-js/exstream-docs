@@ -36,6 +36,7 @@ export default defineConfig({
           { text: 'Modularization', link: '/guide/modularization' },
           { text: 'Forking and merging', link: '/guide/forking-and-merging' },
           { text: 'Error handling', link: '/guide/error-handling' },
+          { text: 'Embedded CSV parser/serializer', link: '/guide/embedded-csv-parser-serializer' },
           { text: 'Operations on sorted data', link: '/guide/operations-on-sorted-data' },
         ]
       },      
