@@ -15,7 +15,7 @@ npm install exstream.js
 ## Quick start
 
 First of all, we have to import the library
-```javascript
+```js
 const _ = require('exstram.js')
 ```
 
@@ -23,7 +23,7 @@ An exstream flow is very similar to a `lodash` chain. We also use the `_` symbol
 
 Consider this simple chain: 
 
-```javascript
+```js
 const output = _(source)
   .map(...)
   .filter(...)
@@ -36,14 +36,14 @@ In its simplest form, `source` is an array and the stream is synchronous. The ma
 
 Consider this example
 
-```javascript
+```js
 const output = _([1,2])
   .map(x => x * 2)
   .map(x => x / 2)
   .values()
 ```
 
-In this case, `1` will be processed by the first `map`, then will go through the second `map`, than will be collected by the `values` method. After the first item reach the end of the flow, the second item will be processed. We'll see the consequences of this behaviour in detail in the next sections, but -- SPOILER TIME -- , this enables the same chain to handle async transformations, to use <i>streams</i> and <i>async iterators</i> as sources, to use this chain as a node transform stream, and a lot more!
+In this case, `1` will be processed by the first `map`, then will go through the second `map`, than will be collected by the `values` method. After the first item reach the end of the flow, the second item will be processed. We'll see the consequences of this behaviour in detail in the next sections, but -- SPOILER ALERT -- , this enables the same chain to handle async transformations, to use <i>streams</i> and <i>async iterators</i> as sources, to use this chain as a node transform stream, and a lot more!
 
 So let's start with some examples
 
@@ -51,7 +51,7 @@ So let's start with some examples
 
 It's super easy. Just wrap the array into an exstream instance and perform your transformations. 
 
-```javascript
+```js
 const _ = require('exstream.js');
 
 const res = _([1, 2, 3])
@@ -71,7 +71,7 @@ That's true, but this is only the beginning
 With `lodash`, you're stuck. With plain javascript, things get complicated fast.
 With `exstream`, it's straightforward
 
-```javascript
+```js
 const _ = require('exstream.js');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -105,7 +105,7 @@ Just pass the desired degree of parallelism to `.resolve` (in this case `.resolv
 
 Use `.rateLimit` to control the rate of the data flow
 
-```javascript
+```js
 const _ = require('exstream.js');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -146,7 +146,7 @@ Let's assume to have a `input.txt` file containing, when unzipped, something lik
 
 We just need to read the file and unzip it using the standard node streams, combined in an exstream chain:
 
-```javascript
+```js
 const _ = require('exstream.js');
 const fs = require('fs')
 const zlib = require('zlib')
@@ -187,7 +187,7 @@ resPromise.then(res => {
 
 <s>WTF</s> no problem at all! An exstream chain is already a compatible node stream, so we just need to pipe the flow to a writable node stream:
 
-```javascript
+```js
 const _ = require('exstream.js');
 const fs = require('fs')
 const zlib = require('zlib')
