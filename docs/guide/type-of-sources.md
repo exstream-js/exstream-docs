@@ -5,7 +5,7 @@ The main entry point to the Exstream API is the Stream constructor `_(source)`.
 
 ## No source
 
-If you define a Stream without a source, you can write the values yourself programmatically (there are few use cases in which it could be useful)
+If you define a Stream without a source, you can programmatically write the values by yourself (there are few use cases in which it could be useful)
 
 ```js
 const _ = require('exstream.js')
@@ -74,10 +74,9 @@ const s1 = _(slowArrayEmitter([1,2,3]))
 const _ = require('exstream.js')
 const fs = require('fs')
 
-// wrapping a Node Readable Stream so you can easily manipulate it
 // in this example we are converting the readable stream in a stream 
 // of records, we are performing a filter and then we are converting 
-//back to csv and write the result on another file
+// back to csv and write the result on another file
 const s1 = _(fs.createReadStream('input.csv'))
   .csv({header: true})
   .filter(x => x.name.startsWith('a'))
