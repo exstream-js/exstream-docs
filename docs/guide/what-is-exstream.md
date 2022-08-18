@@ -19,16 +19,20 @@ const res = _([1,2,3])
 
 The above example demonstrates two of the core features of Exstream:
 
-* <b>Light-Functional approach (*)</b>: exstream enforces the use of well-known functional patterns like map, reduce, filter and many others. 
+* <b>Light-Functional approach</b>: exstream enforces the use of well-known functional patterns like map, reduce, filter and many others. 
+
+::: info
+We call it <b>Light</b>-Functional because FP involves specific math/notation/terminology that this library doesn't follow in a 100% <i>orthodox</i> way. This happens because we're seeking to strike a pragmatic balance between the clear undeniable benefits of FP, and the need to ship workable, maintainable JS. JavaScript is, in fact, not a pure FP language in that, for example, it lacks immutability.
+
+Check out the cool ebook [Functional Light JS](https://github.com/getify/Functional-Light-JS) by [Kyle Simpson](https://github.com/getify) if you want to know more about FP in Javascript
+:::
 
 * <b>A simple, well-known api</b>: this example is almost equal, with minimum differences, to a [lodash chain](https://lodash.com/docs/4.17.15#chain) and is also very similar to the code you would write in plain javascript. But as we will see in this guide, with exstream you can do a lot more, joining together streams and asynchronous transformation and controlling the data flow, using the same clean syntax
 
-::: info *
-We call it <b>Light</b>-Functional because FP involves specific math/notation/terminology that this library don't follow in a 100% <i>orthodox</i> way. This happens because we're seeking to strike a pragmatic balance between the clear undeniable benefits of FP, and the need to ship workable, maintainable JS. JS is, in fact, not a pure FP language in that, for example, lacks immutability.
 
-Check out [Functional Light JS](https://github.com/getify/Functional-Light-JS) if you want to know more about FP in Javascript
+::: info Prerequisites
+The rest of the documentation assumes basic familiarity with Node.js, Promises, Array functional methods and Node.js Streams. If you are totally new to these topics, it might not be the best idea to jump right into this library as your first step - grasp the basics and then come back! You can check your knowledge level with the [Getting started](getting-started) section. Prior experience with lodash, highland or async.js helps
 :::
-
 ## Motivation
 
 Working with node streams is not easy at all. Also writing a minimum complex chain of asynchronous tasks is not trivial when you have to take care of rate limiting, throttling, partial parallelism, error handling, etc.
