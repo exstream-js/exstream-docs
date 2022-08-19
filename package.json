@@ -1,14 +1,18 @@
 {
   "name": "exstream-docs-vite",
   "version": "1.0.0",
-  "main": "index.js",  
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:serve": "vitepress serve docs",
+    "mermaid:light": "glob-run mmdc -b transparent -i docs/guide/\\*.mmd -o docs/guide/\\*-light.svg",
+    "mermaid:dark": "glob-run mmdc -b transparent -t dark -i docs/guide/\\*.mmd -o docs/guide/\\*-dark.svg"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^9.1.5",
+    "glob-run": "^0.1.7",
     "vitepress": "^1.0.0-alpha.8",
     "vue": "^3.2.37"
   }
