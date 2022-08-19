@@ -1,79 +1,106 @@
 # Basic concepts
 
-## Exstream as a chain of streams
+## Flow structure 
 
-Consider this example:
+A simple Exstream flow can be imagined as composed by 3 parts:
+
+<style>   
+  img.dark, html.dark img.light { display: none; }
+  html.dark img.dark { display: block; }
+</style>
+<img class="dark" src="img/exstream-graph-1.mmd-dark.svg">
+<img class="light" src="img/exstream-graph-1.mmd-light.svg">
+
+The data flows from Source, is transformed by Transformer, and then flows to Destination. 
+* <b>Source</b> can be an Array containing the actual data but can also be another Exstream instance, a Readable Node.js Stream, or other type of sources (see [Type of Sources](type-of-sources) to get a comprehensive list).
+* <b>Transformer</b> is a composition of methods (like map, filters, reduce, etc) that performs the data manipulation
+* <b>Destination</b> can be an Array, a Node.js writable stream, or a Promise that resolves with the results. Sometimes we don't even need a Destination, because we're using Exstream to control the flow of the data in an asynchronous context but we don't need to actually "pipe" that data to a Destination
+
+::: info
+A complex Stream, as we'll see in the [Forking and Merging](forking-and-merging) chapter, can involve more than 1 source and more than 1 destination, but let's start easy for now
+:::
+
+## Laziness
+
+An Exstream flow is lazy by default. This means we're only definining what to do with the data, but we'll need to call a consumption method (see also [Stream consumption](stream-consumption)) to actually start the flow.
+
+Consider this snippet of code:
+
+```js
+const myFlow = _([1,2,3]).reduce1((sum, x) => sum + x)
+```
+
+In the above example, we have defined a flow called `myFlow`, that sums together all the source values, emitting a single item containing the sum. As said, however, the flow will not start automatically, because we have only defined the intended behaviour. This is called <i>lazy evaluation</i>. 
+
+::: tip
+The same code written in plain javascript (`[1,2,3].reduce((sum, x) => sum + x, 0)`) gives you back directly the result of the sum. This is an example of an <i>eager evaluation</i>
+:::
+
+To actually consume the flow, we have to call the consumption method that best fit our needs. For example, we can just store the value in a variable calling the `.value()` consumption method:
+
+```js
+const myFlow = _([1,2,3]).reduce1((sum, x) => sum + x)
+const res = myFlow.value()
+//res is 6
+```
+
+In the next sections we'll see a couple of typical examples to better understand the different way in which we can define a flow
+
+## Synchronous vs Asynchronous
+
+Exstream is able to handle both synchronous and asynchronous data flows. 
+
+A synchronous flow is one in which:
+* <b>The Source emits data synchronously</b> (examples of synchronous sources are an Array or, more generically, an iterator)
+* <b>The Transformer does not involve any asynchronous transform</b> (for example `resolve` or `asyncFilter`)
+* <b>The Destination is an in-memory variable</b>
+
+::: warning
+In all the other cases the Stream is considered asynchronous
+:::
+
+A synchronous Stream is consumed (as you can imagine) synchronously. So, for example:
 
 ```js
 const _ = require('exstream.js')
 
-const sourceStream = _([1,2,3])
-const multipliedStream = sourceStream.map(x => x * 2)
-const filteredStream = multipliedStream.filter(x => x < 6)
+const values = _(['a', 'b', 'c'])
+  .map(x => x.toUpperCase())
+  .values()
 
-const res = filteredStream.values()
-// res is [2, 4]
+//values is already available and is equal to ['A', 'B', 'C']
+console.log(values)
 ```
 
-The main concept that you should keep in mind to understand how exstream works, is that an exstream chain is actually a chain of streams: 
-* `sourceStream` is equivalent to a `Readable` Node.js stream. 
-* `multipliedStream` is equivalent to a `Transform` stream that uses `sourceStream` as source 
-* `filteredStream` is equivalent to a `Transform` stream that uses `multipliedStream` as source 
-* Calling `.values()` is equivalent to pipe `filteredStream` in a `Writable` stream that pushes the values emitted by `filteredStream` in an array
-
-This code is functionally equivalent to this:
+Instead, an asynchronous Stream behaves in a different way:
 
 ```js
-const { Readable, Transform, Writable } = require('stream')
+const _ = require('exstream.js')
 
-function * sourceIterator(arr) {
-  for(const x of arr) yield arr
-}
+const values = _(['a', 'b', 'c'])
+  .map(async x => x.toUpperCase())
+  .resolve()
+  .values()
 
-const sourceStream = Readable.from(sourceIterator([1,2,3]))
+console.log(values)
+// values is a Promise!!!
 
-const multiplyBy2 = new Transform({
-  objectMode: true,
-  transform: function (chunk, enc, cb) {
-    this.push(chunk * 2)
-    cb()
-  }
+// we need to wait for the stream to finish to get access to the results
+values.then(results => {
+  console.log(results)
+  //results is ['A', 'B', 'C']
 })
-
-const filterIfLt6 = new Transform({
-  objectMode: true,
-  transform: function (chunk, enc, cb) {
-    if(chunk < 6) this.push(chunk)
-    cb()
-  }
-})
-
-const res = []
-const writeValues = new Writable({
-  objectMode: true,
-  write (chunk, enc, cb) {    
-    res.push(rec)
-    cb()
-  }
-})
-
-sourceStream
-  .pipe(multiplyBy2)
-  .pipe(filterIfLt6)
-  .pipe(writeValues)
-  .on('finish', () => {
-    console.log(res)
-    // res is [2, 4]
-  })
-
-console.log(res)
-//res is empty!
 ```
 
-The main differences are 2:
-* The exstream version is way more compact and readable that the plain node.js version
-* If the source and the transformation chain are synchronous (more on this later), the computation is synchronous as well, while with standard Node.js streams you have to listen to the finish event in order to have `res` populated. So, exstream is async only when needed. This let exstream achieve superior speed in many use cases compared with a plain Node.js stream implementation.
+::: tip
+We're seeing here one of the most common consumption methods: `.values()`. This method collects all the values emitted by the stream and returns an array containing the results in case the stream is synchronous, or a `Promise` that resolves with an array containing the results in case the Stream is asynchronous.
 
-## Back-Pressure
+We'll see other consumption methods in the next examples
+:::
 
-TODO
+## Synchronous use cases
+
+## Asynchronous use cases
+
+
+## Streaming use cases

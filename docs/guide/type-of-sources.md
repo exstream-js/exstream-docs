@@ -5,7 +5,7 @@ The main entry point to the Exstream API is the Stream constructor `_(source)`.
 
 ## No source
 
-If you define a Stream without a source, you can programmatically write the values by yourself (there are few use cases in which it could be useful)
+If you define a Stream without a source, you can programmatically push values in the Stream by yourself (there are few use cases in which it could be useful)
 
 ```js
 const _ = require('exstream.js')
@@ -31,6 +31,9 @@ source
 ```
 
 ## Iterator (ex. an Array, a Set, a Map, an Object, a String)
+
+Every Iterator (standard or custom) can be used as an Exstream source. The stream will emit the items the Iterator would emit:
+
 ```js
 const _ = require('exstream.js')
 
@@ -50,7 +53,7 @@ const s4 = _({a: 1, b: 2})
 const s5 = _(new Map({a: 1, b: 2})) 
 ```
 
-## Async iterator
+## AsyncGenerator
 
 ```js
 const _ = require('exstream.js')
@@ -112,7 +115,7 @@ s1
 
 ## Generator function
 
-A generator function is a function which provides values for the Stream. They are lazy and can be infinite, they can also be asynchronous (for example, making a HTTP request). You emit values on the Stream by calling `write(val)`. Once it has been called, the generator function will not be called again unless you call `next()`. This call to next() will signal you've finished processing the current data and allow for the generator function to be called again. If the Stream is still being consumed the generator function will then be called again. To end the stream, you should call `write(_.nil)`
+A generator function is a function which provides values for the Stream. Generators are lazy and can be infinite. They can also be asynchronous. You emit values on the Stream by calling `write(val)`. Once it has been called, the generator function will not be called again unless you call `next()`. This call to next() will signal you've finished processing the current data and allow for the generator function to be called again. If the Stream is still being consumed the generator function will then be called again. To end the stream, you should call `write(_.nil)`
 
 ```js
 const _ = require('exstream.js')

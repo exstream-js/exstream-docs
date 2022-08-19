@@ -15,7 +15,7 @@ export default defineConfig({
     ],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/micheletriaca/exstream' },
-    ],    
+    ],  
     sidebar: [
       {
         text: 'Introduction',
@@ -30,9 +30,8 @@ export default defineConfig({
         collapsible: true,
         items: [
           { text: 'Basic concepts', link: '/guide/basic-concepts' },
-          { text: 'Lazy vs Eager', link: '/guide/lazy-vs-eager' },
           { text: 'Type of sources', link: '/guide/type-of-sources' },
-          { text: 'Stream consumption', link: '/guide/stream-consumption' },
+          { text: 'Consumption methods', link: '/guide/stream-consumption' },
           { text: 'Modularization', link: '/guide/modularization' },
           { text: 'Forking and merging', link: '/guide/forking-and-merging' },
           { text: 'Error handling', link: '/guide/error-handling' },
@@ -40,6 +39,13 @@ export default defineConfig({
           { text: 'Operations on sorted data', link: '/guide/operations-on-sorted-data' },
         ]
       },      
+      {
+        text: 'Advanced topics',
+        collapsible: true,
+        items: [
+          { text: 'Exstream in depth', link: '/guide/exstream-in-depth' }
+        ]
+      },
       {
         text: 'Filtering',
         collapsible: true,
