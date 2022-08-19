@@ -47,6 +47,10 @@ export default defineConfig({
         ]
       },
       {
+        text: 'Reference',
+        items: []
+      },
+      {
         text: 'Filtering',
         collapsible: true,
         items: [

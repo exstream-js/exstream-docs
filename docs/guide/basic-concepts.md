@@ -85,7 +85,8 @@ const values = _(['a', 'b', 'c'])
 console.log(values)
 // values is a Promise!!!
 
-// we need to wait for the stream to finish to get access to the results
+// we need to wait for the stream to finish 
+// before getting access to the results
 values.then(results => {
   console.log(results)
   //results is ['A', 'B', 'C']
@@ -98,9 +99,86 @@ We're seeing here one of the most common consumption methods: `.values()`. This 
 We'll see other consumption methods in the next examples
 :::
 
-## Synchronous use cases
+## Back pressure
 
-## Asynchronous use cases
+TODO  
+
+## Synchronous examples
+
+A synchronous flow behaves exactly like a lodash chain, and you can use it every time you want to perform data manipulation of in-memory data structures. A synchronous flow takes an Iterator as source, does not involve any asynchronous transform and must be consumed calling `.value()` or `.values()` .
+
+Examples:
+
+### Count words in a string:
+```js
+const numOfWords = _('Tempor magna cillum eiusmod qui mollit.')
+  .splitBy(/\s/)
+  .reduce(sum => sum + 1, 0)
+  .value()
+
+console.log(numOfWords)
+//res is 6
+```
+
+### Data manipulations: 
+```js
+// in this example we want a unique list of all the books
+
+const authors = [
+  { name: 'mario rossi', books: ['book1', 'book2'] },
+  { name: 'giorgio verdi', books: ['book1', 'book3'] }
+]
+
+const books = _(authors)
+  .flatMap(author => author.books)
+  .uniq()
+  .values()
+
+console.log(books)
+//books is ['book1', 'book2', 'book3']
+```
+
+### An example with a custom iterator
+```js
+// this generator builds an infinite iteratori
+// that emits random 4chars strings
+function * randomStringGenerator () {
+  const alphabet = 'abcdefghijklmnopqrstuvz'.split('')
+  const randomChar = () => alphabet[Math.round(Math.random() * (alphabet.length - 1))]
+  while(true) yield Array(4).fill(0).map(randomChar).join('')
+}
+
+// We want to find the first 10 unique strings that start with azk
+const first10aaXXStrings = _(randomStringGenerator())
+  .filter(x => x.startsWith('azk'))
+  .uniq()
+  .take(10)
+  .values()
+
+console.log(first10aaXXStrings)
+```
+
+### Caesar Cipher
+```js
+// in this example we build a reusable, configurable transformer 
+// thanks to _.pipeline. we'll see modularitation in more detail
+// in the next chapters
+const cipher = positions => _.pipeline()
+  .map(char => char.charCodeAt(0))
+  .map(asciiCode => asciiCode + positions)
+  .map(asciiCode => asciiCode > 125 ? asciiCode - 126 + 33 : asciiCode)
+  .map(String.fromCharCode)
+
+const cyphered = _('Nostrud mollit Lorem sint occaecat nostrud cillum')
+  .through(cipher(4))
+  .values()
+  .join('')
+
+console.log(cyphered)
+// cyphered is Rswxvyh$qsppmx$Psviq$wmrx$sggeigex$rswxvyh$gmppyq
+```
+
+## Asynchronous examples
 
 
-## Streaming use cases
+## Streaming examples
