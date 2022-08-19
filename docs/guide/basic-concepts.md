@@ -8,8 +8,8 @@ A simple Exstream flow can be imagined as composed by 3 parts:
   img.dark, html.dark img.light { display: none; }
   html.dark img.dark { display: block; }
 </style>
-<img class="dark" src="img/exstream-graph-1.mmd-dark.svg">
-<img class="light" src="img/exstream-graph-1.mmd-light.svg">
+<img class="dark" src="./img/exstream-graph-1.mmd-dark.svg">
+<img class="light" src="./img/exstream-graph-1.mmd-light.svg">
 
 The data flows from Source, is transformed by Transformer, and then flows to Destination. 
 * <b>Source</b> can be an Array containing the actual data but can also be another Exstream instance, a Readable Node.js Stream, or other type of sources (see [Type of Sources](type-of-sources) to get a comprehensive list).
@@ -22,7 +22,7 @@ A complex Stream, as we'll see in the [Forking and Merging](forking-and-merging)
 
 ## Laziness
 
-An Exstream flow is lazy by default. This means we're only definining what to do with the data, but we'll need to call a consumption method (see also [Stream consumption](stream-consumption)) to actually start the flow.
+An Exstream flow is lazy by default. This means we're only definining what to do with the data, but we'll need to call a consumption method (see also [Consumption methods](consumption-methods)) to actually start the flow.
 
 Consider this snippet of code:
 

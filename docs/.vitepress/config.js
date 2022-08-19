@@ -31,7 +31,7 @@ export default defineConfig({
         items: [
           { text: 'Basic concepts', link: '/guide/basic-concepts' },
           { text: 'Type of sources', link: '/guide/type-of-sources' },
-          { text: 'Consumption methods', link: '/guide/stream-consumption' },
+          { text: 'Consumption methods', link: '/guide/consumption-methods' },
           { text: 'Modularization', link: '/guide/modularization' },
           { text: 'Forking and merging', link: '/guide/forking-and-merging' },
           { text: 'Error handling', link: '/guide/error-handling' },
