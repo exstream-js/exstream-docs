@@ -30,6 +30,15 @@ source
   })
 ```
 
+## A Number
+
+```js
+const _ = require('exstream.js')
+
+//this stream will emit 1, 2, 3, ..., 1000 as values
+const s1 = _(1000)
+```
+
 ## Iterator (ex. an Array, a Set, a Map, an Object, a String)
 
 Every Iterator (standard or custom) can be used as an Exstream source. The stream will emit the items the Iterator would emit:

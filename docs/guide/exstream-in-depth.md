@@ -77,3 +77,7 @@ The main differences are 2:
 ## Back-Pressure
 
 TODO
+
+## Performance considerations
+
+TODO

@@ -140,7 +140,7 @@ console.log(books)
 
 ### An example with a custom iterator
 ```js
-// this generator builds an infinite iteratori
+// this generator builds an infinite Iterator
 // that emits random 4chars strings
 function * randomStringGenerator () {
   const alphabet = 'abcdefghijklmnopqrstuvz'.split('')
@@ -149,19 +149,19 @@ function * randomStringGenerator () {
 }
 
 // We want to find the first 10 unique strings that start with azk
-const first10aaXXStrings = _(randomStringGenerator())
+const first10azkStrings = _(randomStringGenerator())
   .filter(x => x.startsWith('azk'))
   .uniq()
   .take(10)
   .values()
 
-console.log(first10aaXXStrings)
+console.log(first10azkStrings)
 ```
 
 ### Caesar Cipher
 ```js
 // in this example we build a reusable, configurable transformer 
-// thanks to _.pipeline. we'll see modularitation in more detail
+// thanks to _.pipeline. we'll see modularitazion in more detail
 // in the next chapters
 const cipher = positions => _.pipeline()
   .map(char => char.charCodeAt(0))
@@ -180,5 +180,84 @@ console.log(cyphered)
 
 ## Asynchronous examples
 
+An Exstream flow can handle asynchronous transforms without troubles. This open the possibility to make an HTTP call, an SQL query, calling an S3 API, etc, using the same clean API
 
+Examples:
+
+### Write 10M records on a Postgres database in chunks of 10000
+```js
+const { Client } = require('pg')
+
+/**
+ *   Builds an infinite Iterator that emits records with
+ *   random data
+ */
+function * randomRecordGenerator () {
+  const alphabet = 'abcdefghijklmnopqrstuvz'.split('')
+  const randomChar = () => alphabet[Math.round(Math.random() * (alphabet.length - 1))]
+  const randomWord = (numChars) => [...Array(numChars)].map(randomChar).join('')
+  while(true) yield { 
+    FirstName: randomWord(4), 
+    LastName: randomWord(4), 
+    Email: randomWord(4) + '@google.com' 
+  }
+}
+
+/**
+ *  Builds a postgres query with $n placeholders
+ */
+const genQuery = (numOfRecords, numOfFields) => {
+  const sqlValues = _(numOfRecords * numOfFields)
+    .map(i => '$' + i)
+    .batch(numOfFields)
+    .map(x => `(${x.join(', ')})`)
+    .values()
+    .join(', ')
+
+  return `INSERT INTO users(name, email) VALUES ${sqlValues} RETURNING *`
+}
+
+/**
+ *  The actual flow
+ */
+;(async () => {
+  const client = new Client()
+  await client.connect()
+
+  _(randomRecordGenerator())
+    .map(record => [record.FirstName, record.Email])
+    .take(1000000)
+    .batch(10000)   
+    .map(recordValues => client.query(
+      genQuery(recordValues.length, 2), 
+      recordValues
+    ))
+    .resolve()
+    .start()
+})()
+
+
+```
+
+In the above example we've used the `.start()` consumption method. This method is useful when we are not interested to pipe our stream in another stream. That's because our data has already been piped to postgres through the async map. The flow can be refactored to see it clearly:
+
+```js
+const createPostgresWriteStream = () => _.pipeline()
+  .batch(10000)   
+  .map(recordValues => client.query(
+    genQuery(recordValues.length, 2), 
+    recordValues
+  ))
+  .resolve()
+  .start()
+
+
+_(randomRecordGenerator())
+    .map(record => [record.FirstName, record.Email])
+    .take(1000000)
+    .pipe(createPostgresWriteStream())
+})()
+```
+
+As you can see, we have created in essence a new Writable stream and we have piped our data to the new Writable. the Writable buffers the data in block of 10000 records and bulk loads those records to postgres
 ## Streaming examples

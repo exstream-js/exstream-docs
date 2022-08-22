@@ -3,7 +3,11 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({  
   title: 'Exstream',
   description: 'Exstream.js - The library to handle sync/async/streaming data flows',
+  lastUpdated: true,  
   themeConfig: {
+    editLink: {
+      pattern: 'https://github.com/exstream-js/exstream-js.github.io/edit/master/docs/:path'
+    },   
     siteTitle: 'Exstream',
     algolia: {
       apiKey: '1035291f12f45bfc745a9b261bed6502',

@@ -1,3 +1,79 @@
 # Consumption methods
 
-TODO
+An Exstream flow is lazy by default. To consume a stream we have to call a consumption method.
+There are many consumption methods that are suitable for various scenarios:
+
+## Stream.values()
+
+Collects all the results of the flow in an array. If the stream is synchronous, it returns the array. If the stream is asynchronous, it returns a Promise that resolves with the array
+
+```js
+const results = _([1,2,3]).map(x => x * 2).values()
+
+const resultsAsync = await _([1,2,3]).map(async x => x * 2).resolve().values()
+```
+
+## Stream.value()
+
+Same as `Stream.values()` but it returns a single value. It's useful when the last method of the chain is a method like `Stream.reduce` or `Stream.groupBy` that emit a single value:
+
+```js
+const sum = _([1,2,3]).reduce1((sum, x) => sum + x).value()
+```
+
+## Stream.toPromise()
+
+Same as `Stream.values()` but it always returns a Promise, regardless of the Stream being synchronous or not
+
+```js
+const results = await _([1,2,3]).map(x => x * 2).toPromise()
+```
+
+## Stream.start()
+
+It just starts the Stream
+
+```js
+_(1000)
+  .tap(console.log)
+  .start()
+
+// will log 1, 2, 3, ... 1000 to the console
+```
+
+`Stream.start()` is often used to build pipelines that acts as a Writable Stream:
+
+```js
+const mongoWritable = _.pipeline()
+  .batch(1000)
+  .map(records => writeToMongo(records))
+  .resolve()
+  .start()
+
+_(myRecords).pipe(mongoWritable)
+```
+
+## Stream.each(callback)
+
+It consumes the Stream and it calls the callback function for each value emitted
+
+```js
+_([1,2,3])
+  .map(x => x * 2)
+  .each(x => {
+    console.log(x)
+  })
+```
+
+## Stream.toArray(callback)
+
+It collects all the emitted items in an Array and it calls the callback function with that Array:
+
+```js
+_([1,2,3])
+  .map(x => x * 2)
+  .toArray(results => {
+    console.log(results)
+    //results is [2,4,6]
+  })
+```
