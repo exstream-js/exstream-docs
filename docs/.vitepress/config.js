@@ -49,7 +49,8 @@ export default defineConfig({
           text: 'Advanced topics',
           collapsible: true,
           items: [
-            { text: 'Exstream in depth', link: '/guide/exstream-in-depth' }
+            { text: 'Exstream in depth', link: '/guide/exstream-in-depth' },
+            { text: 'Extending Extream', link: '/guide/extending-exstream' },
           ]
         },
       ],

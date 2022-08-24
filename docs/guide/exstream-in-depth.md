@@ -72,7 +72,7 @@ console.log(res)
 
 The main differences are 2:
 * The exstream version is way more compact and readable that the plain node.js version
-* If the source and the transformation chain are synchronous (more on this later), the computation is synchronous as well, while with standard Node.js streams you have to listen to the finish event in order to have `res` populated. So, exstream is async only when needed. This let exstream achieve superior speed in many use cases compared with a plain Node.js stream implementation.
+* If the source and the transformation chain are synchronous, the computation is synchronous as well, while with standard Node.js streams you have to listen to the finish event in order to have `res` populated. So, exstream is async only when needed. This let exstream achieve superior speed in many use cases compared with a plain Node.js stream implementation.
 
 ## Back-Pressure
 

@@ -5,7 +5,11 @@ The main entry point to the Exstream API is the Stream constructor `_(source)`.
 
 ## No source
 
-If you define a Stream without a source, you can programmatically push values in the Stream by yourself (there are few use cases in which it could be useful)
+If you define a Stream without a source, you can programmatically push values in the Stream by yourself (there are few use cases in which it could be useful). 
+
+::: warning
+Since we don't know in advance when you'll put data into the stream, we consider it an <b>asynchronous</b> source
+:::
 
 ```js
 const _ = require('exstream.js')
@@ -30,7 +34,7 @@ source
   })
 ```
 
-## A Number
+## Number
 
 ```js
 const _ = require('exstream.js')

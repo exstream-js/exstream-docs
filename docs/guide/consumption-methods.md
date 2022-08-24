@@ -77,3 +77,16 @@ _([1,2,3])
     //results is [2,4,6]
   })
 ```
+
+## Stream.pipe(target)
+
+It pipes the chain to a Node.js Stream
+
+```js
+_(randomStringGenerator())
+  .pipe(process.stdout)
+```
+
+::: warning
+`.pipe(target)` can be used also to pipe our chain to an Exstream pipeline or another Exstream flow. In those cases calling this method is equivalent to call [`.through`](/reference/through), so the Stream is consumed automatically only if you pass a vanilla Node.js Stream.
+:::

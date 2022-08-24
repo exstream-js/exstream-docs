@@ -94,18 +94,38 @@ values.then(results => {
 ```
 
 ::: tip
-We're seeing here one of the most common consumption methods: `.values()`. This method collects all the values emitted by the stream and returns an array containing the results in case the stream is synchronous, or a `Promise` that resolves with an array containing the results in case the Stream is asynchronous.
+We're seeing here one of the most common consumption methods: `.values()`. This method collects all the values emitted by the stream and returns:
+* an `Array` containing the results in case the stream is synchronous
+* a `Promise` that resolves with an array containing the results in case the Stream is asynchronous.
 
 We'll see other consumption methods in the next examples
 :::
 
 ## Back pressure
 
-TODO  
+> There is a general problem that occurs during data handling called <b>backpressure</b> and describes a buildup of data behind a buffer during data transfer. When the receiving end of the transfer has complex operations, or is slower for whatever reason, there is a tendency for data from the incoming source to accumulate, like a clog.
+>
+>
+> To solve this problem, there must be a delegation system in place to ensure a smooth flow of data from one source to another. Different communities have resolved this issue uniquely to their programs, Unix pipes and TCP sockets are good examples of this, and is often times referred to as flow control. In Node.js, streams have been the adopted solution.
+>
+> <cite>[Node.js website - Backpressuring in Streams](https://nodejs.org/en/docs/guides/backpressuring-in-streams/)</cite>
+
+Handling backpressure is foundamental to implement data flows in which the amount of data is larger than the available memory. Exstream handles backpressure automatically, pausing the flow when a writable is too slow to handle the incoming data and resuming it when the writable is ready again. 
+
+A flow can be paused by Exstream itself (for example if we're using `.resolve()` and we're waiting for a `Promise` to resolve) or can be paused by a Node.js Stream in which we've piped our data, like in this example:
+
+```js
+_(infiniteRecordGenerator)
+  .csvStringify({header: true})
+  .pipe(fs.createWriteStream('out.csv'))
+```
+
+The stream in the above example will never crash because of heap memory limits (but he will crash when the HD free space will finish :sweat_smile:)
+  
 
 ## Synchronous examples
 
-A synchronous flow behaves exactly like a lodash chain, and you can use it every time you want to perform data manipulation of in-memory data structures. A synchronous flow takes an Iterator as source, does not involve any asynchronous transform and must be consumed calling `.value()` or `.values()` .
+A synchronous flow behaves exactly like a lodash chain, and you can use it every time you want to perform data manipulation of in-memory data structures. A synchronous flow takes an Iterator as source, does not involve any asynchronous transform and must be consumed calling `.value()` or `.values()`. A sync flow doesn't involve any backpressure mechanism
 
 Examples:
 
@@ -239,7 +259,7 @@ const genQuery = (numOfRecords, numOfFields) => {
 
 ```
 
-In the above example we've used the `.start()` consumption method. This method is useful when we are not interested to pipe our stream in another stream. That's because our data has already been piped to postgres through the async map. The flow can be refactored to see it clearly:
+In the above example we've used the `.start()` consumption method. This method is useful when we are not interested to pipe our stream in another stream. That's because our data has already been piped to postgres through the async map. The flow can be refactored to see it clearly (see also [Modulatization](/guide/modularization)):
 
 ```js
 const createPostgresWriteStream = () => _.pipeline()
