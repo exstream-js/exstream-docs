@@ -10,6 +10,7 @@ export default defineConfig({
     },   
     siteTitle: 'Exstream',
     algolia: {
+      appId: 'NABHM3QIFR',
       apiKey: '1035291f12f45bfc745a9b261bed6502',
       indexName: 'exstream.js'
       // algoliaOptions: { facetFilters: ['tags:guide,api'] }
