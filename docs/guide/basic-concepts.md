@@ -280,4 +280,7 @@ _(randomRecordGenerator())
 ```
 
 As you can see, we have created in essence a new Writable stream and we have piped our data to the new Writable. the Writable buffers the data in block of 10000 records and bulk loads those records to postgres
+
 ## Streaming examples
+
+TODO
