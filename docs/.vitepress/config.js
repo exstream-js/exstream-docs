@@ -4,6 +4,10 @@ export default defineConfig({
   title: 'Exstream',
   description: 'Exstream.js - The library to handle sync/async/streaming data flows',
   lastUpdated: true,  
+
+  head: [
+    ['script', { async: '', defer: '', 'data-website-id': "a1351048-f946-487a-b23f-eddccb3d794a", src: 'https://exstream-unami.herokuapp.com/umami.js' }]
+  ],
   themeConfig: {
     editLink: {
       pattern: 'https://github.com/exstream-js/exstream-js.github.io/edit/master/docs/:path'
