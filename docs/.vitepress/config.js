@@ -6,7 +6,13 @@ export default defineConfig({
   lastUpdated: true,  
 
   head: [
-    ['script', { async: '', defer: '', 'data-website-id': "0a666937-18fe-4ea5-991b-b634dda35c28", src: 'https://exstream-unami.fly.dev/umami.js' }]
+    ['script', { 
+      async: '', 
+      defer: '', 
+      'data-domains': 'exstream-js.github.io', 
+      'data-website-id': "0a666937-18fe-4ea5-991b-b634dda35c28", 
+      src: 'https://exstream-unami.fly.dev/umami.js' 
+    }]
   ],
   themeConfig: {
     editLink: {
