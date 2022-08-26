@@ -1,3 +1,3 @@
-# Stream.filter(fn)
+# Exstream.filter(fn)
 
 TODO

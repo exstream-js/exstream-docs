@@ -128,7 +128,7 @@ s1
 
 ## Generator function
 
-A generator function is a function which provides values for the Stream. Generators are lazy and can be infinite. They can also be asynchronous. You emit values on the Stream by calling `write(val)`. Once it has been called, the generator function will not be called again unless you call `next()`. This call to next() will signal you've finished processing the current data and allow for the generator function to be called again. If the Stream is still being consumed the generator function will then be called again. To end the stream, you should call `write(_.nil)`
+A generator function is a function which provides values for the Exstream. Generators are lazy and can be infinite. They can also be asynchronous. You emit values on the Stream by calling `write(val)`. Once it has been called, the generator function will not be called again unless you call `next()`. This call to next() will signal you've finished processing the current data and allow for the generator function to be called again. If the Stream is still being consumed the generator function will then be called again. To end the stream, you should call `write(_.nil)`
 
 ```js
 const _ = require('exstream.js')

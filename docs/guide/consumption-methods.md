@@ -3,7 +3,7 @@
 An Exstream flow is lazy by default. To consume a stream we have to call a consumption method.
 There are many consumption methods that are suitable for various scenarios:
 
-## Stream.values()
+## Exstream.values()
 
 Collects all the results of the flow in an array. If the stream is synchronous, it returns the array. If the stream is asynchronous, it returns a Promise that resolves with the array
 
@@ -13,23 +13,23 @@ const results = _([1,2,3]).map(x => x * 2).values()
 const resultsAsync = await _([1,2,3]).map(async x => x * 2).resolve().values()
 ```
 
-## Stream.value()
+## Exstream.value()
 
-Same as `Stream.values()` but it returns a single value. It's useful when the last method of the chain is a method like `Stream.reduce` or `Stream.groupBy` that emit a single value:
+Same as `Exstream.values()` but it returns a single value. It's useful when the last method of the chain is a method like `Exstream.reduce` or `Exstream.groupBy` that emit a single value:
 
 ```js
 const sum = _([1,2,3]).reduce1((sum, x) => sum + x).value()
 ```
 
-## Stream.toPromise()
+## Exstream.toPromise()
 
-Same as `Stream.values()` but it always returns a Promise, regardless of the Stream being synchronous or not
+Same as `Exstream.values()` but it always returns a Promise, regardless of the Stream being synchronous or not
 
 ```js
 const results = await _([1,2,3]).map(x => x * 2).toPromise()
 ```
 
-## Stream.start()
+## Exstream.start()
 
 It just starts the Stream
 
@@ -41,7 +41,7 @@ _(1000)
 // will log 1, 2, 3, ... 1000 to the console
 ```
 
-`Stream.start()` is often used to build pipelines that acts as a Writable Stream:
+`Exstream.start()` is often used to build pipelines that acts as a Writable Stream:
 
 ```js
 const mongoWritable = _.pipeline()
@@ -53,7 +53,7 @@ const mongoWritable = _.pipeline()
 _(myRecords).pipe(mongoWritable)
 ```
 
-## Stream.each(callback)
+## Exstream.each(callback)
 
 It consumes the Stream and it calls the callback function for each value emitted
 
@@ -65,7 +65,7 @@ _([1,2,3])
   })
 ```
 
-## Stream.toArray(callback)
+## Exstream.toArray(callback)
 
 It collects all the emitted items in an Array and it calls the callback function with that Array:
 
@@ -78,7 +78,7 @@ _([1,2,3])
   })
 ```
 
-## Stream.pipe(target)
+## Exstream.pipe(target)
 
 It pipes the chain to a Node.js Stream
 
@@ -88,5 +88,5 @@ _(randomStringGenerator())
 ```
 
 ::: warning
-`.pipe(target)` can be used also to pipe our chain to an Exstream pipeline or another Exstream flow. In those cases calling this method is equivalent to call [`.through`](/reference/through), so the Stream is consumed automatically only if you pass a vanilla Node.js Stream.
+`.pipe(target)` can be used also to pipe our chain to an Exstream pipeline or another Exstream flow. In those cases calling this method is equivalent to call [`.through`](/reference/through), so the Stream is consumed automatically only if you pass a vanilla Node.js Exstream.
 :::

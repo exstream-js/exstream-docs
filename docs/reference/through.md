@@ -1,3 +1,3 @@
-# Stream.through(target)
+# Exstream.through(target)
 
 TODO

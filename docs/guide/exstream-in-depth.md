@@ -8,10 +8,10 @@ Consider this example:
 const _ = require('exstream.js')
 
 const sourceStream = _([1,2,3])
-const multipliedStream = sourceStream.map(x => x * 2)
-const filteredStream = multipliedStream.filter(x => x < 6)
+const multipliedStream = sourceExstream.map(x => x * 2)
+const filteredStream = multipliedExstream.filter(x => x < 6)
 
-const res = filteredStream.values()
+const res = filteredExstream.values()
 // res is [2, 4]
 ```
 
