@@ -31,7 +31,7 @@ Check out the cool ebook [Functional Light JS](https://github.com/getify/Functio
 
 
 ::: info Prerequisites
-The rest of the documentation assumes basic familiarity with Node.js, Promises, Array functional methods and Node.js Streams. If you are totally new to these topics, it might not be the best idea to jump right into this library as your first step - grasp the basics and then come back! You can check your knowledge level with the [Getting started](getting-started) section. Prior experience with lodash, highland or async.js helps
+The rest of the documentation assumes basic familiarity with Node.js, Promises, Array functional methods and Node.js Streams. If you are totally new to these topics, it might not be the best idea to jump right into this library as your first step - grasp the basics and then come back! You can check your knowledge level with the [Getting started](getting-started.html) section. Prior experience with lodash, highland or async.js helps
 :::
 ## Motivation
 

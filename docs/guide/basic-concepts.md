@@ -12,17 +12,17 @@ A simple Exstream flow can be imagined as composed by 3 parts:
 <img class="light" src="./img/exstream-graph-1.mmd-light.svg">
 
 The data flows from Source, is transformed by Transformer, and then flows to Destination. 
-* <b>Source</b> can be an Array containing the actual data but can also be another Exstream instance, a Readable Node.js Stream, or other type of sources (see [Type of Sources](type-of-sources) to get a comprehensive list).
+* <b>Source</b> can be an Array containing the actual data but can also be another Exstream instance, a Readable Node.js Stream, or other type of sources (see [Type of Sources](type-of-sources.html) to get a comprehensive list).
 * <b>Transformer</b> is a composition of methods (like map, filters, reduce, etc) that performs the data manipulation
 * <b>Destination</b> can be an Array, a Node.js writable stream, or a Promise that resolves with the results. Sometimes we don't even need a Destination, because we're using Exstream to control the flow of the data in an asynchronous context but we don't need to actually "pipe" that data to a Destination
 
 ::: info
-A complex Stream, as we'll see in the [Forking and Merging](forking-and-merging) chapter, can involve more than 1 source and more than 1 destination, but let's start easy for now
+A complex Stream, as we'll see in the [Forking and Merging](forking-and-merging.html) chapter, can involve more than 1 source and more than 1 destination, but let's start easy for now
 :::
 
 ## Laziness
 
-An Exstream flow is lazy by default. This means we're only definining what to do with the data, but we'll need to call a consumption method (see also [Consumption methods](consumption-methods)) to actually start the flow.
+An Exstream flow is lazy by default. This means we're only definining what to do with the data, but we'll need to call a consumption method (see also [Consumption methods](consumption-methods.html)) to actually start the flow.
 
 Consider this snippet of code:
 
@@ -259,7 +259,7 @@ const genQuery = (numOfRecords, numOfFields) => {
 
 ```
 
-In the above example we've used the `.start()` consumption method. This method is useful when we are not interested to pipe our stream in another stream. That's because our data has already been piped to postgres through the async map. The flow can be refactored to see it clearly (see also [Modulatization](/guide/modularization)):
+In the above example we've used the `.start()` consumption method. This method is useful when we are not interested to pipe our stream in another stream. That's because our data has already been piped to postgres through the async map. The flow can be refactored to see it clearly (see also [Modulatization](/guide/modularization.html)):
 
 ```js
 const createPostgresWriteStream = () => _.pipeline()
